@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse our comprehensive language courses - English, Spanish, French, German and more. Find the perfect course for your level and schedule.">
+  <title>Course Catalog - Language School Design System</title>
+  
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="../src/css/variables.css">
+  <link rel="stylesheet" href="../src/css/components/buttons.css">
+  
+  <style>
+    /* Base styles for demo */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: var(--font-primary);
+      line-height: var(--leading-normal);
+      color: var(--color-neutral-800);
+      background-color: var(--color-neutral-50);
+    }
+    
+    .container {
+      max-width: var(--container-xl);
+      margin: 0 auto;
+      padding: 0 var(--space-4);
+    }
+    
+    /* Header */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--color-neutral-200);
+      padding: var(--space-4) 0;
+      margin-bottom: var(--space-8);
+    }
+    
+    .header h1 {
+      font-family: var(--font-headings);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: var(--color-primary-600);
+      margin-bottom: var(--space-2);
+    }
+    
+    .header p {
+      font-size: var(--text-lg);
+      color: var(--color-neutral-600);
+    }
+    
+    /* Filter Section */
+    .course-filter-container {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      margin-bottom: var(--space-8);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .filter-section {
+      margin-bottom: var(--space-6);
+    }
+    
+    .filter-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .filter-legend {
+      font-weight: var(--font-semibold);
+      font-size: var(--text-base);
+      color: var(--color-neutral-700);
+      margin-bottom: var(--space-3);
+    }
+    
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    
+    .filter-btn {
+      padding: var(--space-2) var(--space-4);
+      border: 2px solid var(--color-neutral-300);
+      background: white;
+      color: var(--color-neutral-700);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      cursor: pointer;
+      transition: all var(--duration-200) var(--ease-in-out);
+      min-height: var(--space-10);
+    }
+    
+    .filter-btn:hover {
+      border-color: var(--color-primary-400);
+      background: var(--color-primary-50);
+      color: var(--color-primary-700);
+    }
+    
+    .filter-btn.active {
+      border-color: var(--color-primary-600);
+      background: var(--color-primary-600);
+      color: white;
+    }
+    
+    .filter-btn:focus-visible {
+      outline: 2px solid var(--color-primary-600);
+      outline-offset: 2px;
+    }
+    
+    /* Search */
+    .search-section {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .course-search-input {
+      flex: 1;
+      min-width: 300px;
+      padding: var(--space-3) var(--space-4);
+      border: 2px solid var(--color-neutral-300);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-base);
+      font-family: var(--font-primary);
+    }
+    
+    .course-search-input:focus {
+      outline: none;
+      border-color: var(--color-primary-600);
+      box-shadow: var(--shadow-primary);
+    }
+    
+    /* Results Info */
+    .results-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+    
+    .filter-results-count {
+      font-size: var(--text-base);
+      color: var(--color-neutral-600);
+    }
+    
+    /* Course Grid */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: var(--space-6);
+      margin-bottom: var(--space-8);
+    }
+    
+    /* Course Card */
+    .course-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-base);
+      border: 1px solid var(--color-neutral-200);
+      transition: all var(--duration-300) var(--ease-in-out);
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .course-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    
+    .course-card.hidden {
+      display: none;
+    }
+    
+    .course-card__header {
+      margin-bottom: var(--space-4);
+    }
+    
+    .course-card__title {
+      font-family: var(--font-headings);
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      color: var(--color-neutral-900);
+      margin-bottom: var(--space-2);
+      line-height: var(--leading-tight);
+    }
+    
+    .course-card__level {
+      display: inline-block;
+      background: var(--color-primary-100);
+      color: var(--color-primary-700);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    
+    .course-card__content {
+      margin-bottom: var(--space-5);
+    }
+    
+    .course-card__description {
+      color: var(--color-neutral-600);
+      margin-bottom: var(--space-4);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .course-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-neutral-500);
+    }
+    
+    .course-card__meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1-5);
+    }
+    
+    .course-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    
+    .course-card__price {
+      font-size: var(--text-lg);
+      font-weight: var(--font-bold);
+      color: var(--color-secondary-600);
+    }
+    
+    /* Empty State */
+    .courses-empty-state {
+      text-align: center;
+      padding: var(--space-16) var(--space-8);
+      color: var(--color-neutral-500);
+      display: none;
+    }
+    
+    .courses-empty-state h3 {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-4);
+      color: var(--color-neutral-700);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-btn {
+        text-align: center;
+      }
+      
+      .search-section {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .course-search-input {
+        min-width: auto;
+      }
+      
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .results-info {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <h1>Course Catalog</h1>
+      <p>Discover the perfect language course for your goals and schedule</p>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <main id="main-content" class="container">
+    
+    <!-- Course Filter -->
+    <section class="course-filter-container" aria-labelledby="filter-heading">
+      <h2 id="filter-heading" class="sr-only">Filter Courses</h2>
+      
+      <!-- Search -->
+      <div class="filter-section">
+        <div class="search-section">
+          <label for="course-search" class="sr-only">Search courses</label>
+          <input 
+            type="search" 
+            id="course-search" 
+            class="course-search-input" 
+            placeholder="Search courses, topics, or skills..."
+            aria-describedby="search-help"
+          >
+          <button type="button" class="btn btn-primary">Search</button>
+          <button type="button" class="btn btn-ghost clear-filters-btn">Clear All</button>
+        </div>
+        <div id="search-help" class="sr-only">Search through course titles, descriptions, and topics</div>
+      </div>
+      
+      <!-- Level Filter -->
+      <div class="filter-section">
+        <div class="filter-group" role="group" aria-labelledby="level-legend">
+          <div id="level-legend" class="filter-legend">Proficiency Level</div>
+          <button class="filter-btn active" data-filter="level" data-value="all" aria-pressed="true">All Levels</button>
+          <button class="filter-btn" data-filter="level" data-value="beginner" aria-pressed="false">Beginner (A1-A2)</button>
+          <button class="filter-btn" data-filter="level" data-value="intermediate" aria-pressed="false">Intermediate (B1-B2)</button>
+          <button class="filter-btn" data-filter="level" data-value="advanced" aria-pressed="false">Advanced (C1-C2)</button>
+        </div>
+      </div>
+      
+      <!-- Language Filter -->
+      <div class="filter-section">
+        <div class="filter-group" role="group" aria-labelledby="language-legend">
+          <div id="language-legend" class="filter-legend">Language</div>
+          <button class="filter-btn active" data-filter="language" data-value="all" aria-pressed="true">All Languages</button>
+          <button class="filter-btn" data-filter="language" data-value="english" aria-pressed="false">English</button>
+          <button class="filter-btn" data-filter="language" data-value="spanish" aria-pressed="false">Spanish</button>
+          <button class="filter-btn" data-filter="language" data-value="french" aria-pressed="false">French</button>
+          <button class="filter-btn" data-filter="language" data-value="german" aria-pressed="false">German</button>
+          <button class="filter-btn" data-filter="language" data-value="italian" aria-pressed="false">Italian</button>
+        </div>
+      </div>
+      
+      <!-- Format Filter -->
+      <div class="filter-section">
+        <div class="filter-group" role="group" aria-labelledby="format-legend">
+          <div id="format-legend" class="filter-legend">Course Format</div>
+          <button class="filter-btn active" data-filter="format" data-value="all" aria-pressed="true">All Formats</button>
+          <button class="filter-btn" data-filter="format" data-value="online" aria-pressed="false">Online</button>
+          <button class="filter-btn" data-filter="format" data-value="in-person" aria-pressed="false">In-Person</button>
+          <button class="filter-btn" data-filter="format" data-value="hybrid" aria-pressed="false">Hybrid</button>
+          <button class="filter-btn" data-filter="format" data-value="self-paced" aria-pressed="false">Self-Paced</button>
+        </div>
+      </div>
+      
+      <!-- Schedule Filter -->
+      <div class="filter-section">
+        <div class="filter-group" role="group" aria-labelledby="schedule-legend">
+          <div id="schedule-legend" class="filter-legend">Schedule</div>
+          <button class="filter-btn active" data-filter="schedule" data-value="all" aria-pressed="true">All Schedules</button>
+          <button class="filter-btn" data-filter="schedule" data-value="morning" aria-pressed="false">Morning</button>
+          <button class="filter-btn" data-filter="schedule" data-value="afternoon" aria-pressed="false">Afternoon</button>
+          <button class="filter-btn" data-filter="schedule" data-value="evening" aria-pressed="false">Evening</button>
+          <button class="filter-btn" data-filter="schedule" data-value="weekend" aria-pressed="false">Weekend</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Results Info -->
+    <div class="results-info">
+      <div class="filter-results-count">Showing 12 of 12 courses</div>
+    </div>
+    
+    <!-- Course Grid -->
+    <section class="courses-grid" aria-labelledby="courses-heading">
+      <h2 id="courses-heading" class="sr-only">Available Courses</h2>
+      
+      <!-- English Courses -->
+      <article class="course-card" 
+               data-level="beginner" 
+               data-language="english" 
+               data-format="online" 
+               data-schedule="evening"
+               data-tags="business english professional communication">
+        <header class="course-card__header">
+          <h3 class="course-card__title">Business English Essentials</h3>
+          <span class="course-card__level">Beginner</span>
+        </header>
+        <div class="course-card__content">
+          <p class="course-card__description">
+            Master professional English communication skills for the workplace. Cover email writing, presentations, meetings, and networking.
+          </p>
+          <div class="course-card__meta">
+            <div class="course-card__meta-item">
+              <span>📅</span>
+              <span>8 weeks</span>
+            </div>
+            <div class="course-card__meta-item">
+              <span>🕰️</span>
+              <span>2 hours/week</span>
+            </div>
+            <div class="course-card__meta-item">
+              <span>💻</span>
+              <span>Online</span>
+            </div>
+          </div>
+        </div>
+        <footer class="course-card__footer">
+          <div class="course-card__price">$199</div>
+          <button class="btn btn-primary">View Details</button>
+        </footer>
+      </article>
+      
+      <!-- Spanish Course -->
+      <article class="course-card" 
+               data-level="intermediate" 
+               data-language="spanish" 
+               data-format="in-person" 
+               data-schedule="morning"
+               data-tags="conversational spanish culture travel">
+        <header class="course-card__header">
+          <h3 class="course-card__title">Conversational Spanish</h3>
+          <span class="course-card__level">Intermediate</span>
+        </header>
+        <div class="course-card__content">
+          <p class="course-card__description">
+            Improve your Spanish speaking confidence through real-world conversations, cultural immersion, and interactive practice.
+          </p>
+          <div class="course-card__meta">
+            <div class="course-card__meta-item">
+              <span>📅</span>
+              <span>12 weeks</span>
+            </div>
+            <div class="course-card__meta-item">
+              <span>🕰️</span>
+              <span>3 hours/week</span>
+            </div>
+            <div class="course-card__meta-item">
+              <span>🏢</span>
+              <span>In-Person</span>
+            </div>
+          </div>
+        </div>
+        <footer class="course-card__footer">
+          <div class="course-card__price">$299</div>
+          <button class="btn btn-accent">Enroll Now</button>
+        </footer>
+      </article>
+      
+      <!-- French Course -->
+      <article class="course-card" 
+               data-level="beginner" 
+               data-language="french" 
+               data-format="hybrid" 
+               data-schedule="afternoon"
+               data-tags="french basics pronunciation grammar">
+        <header class="course-card__header">
+          <h3 class="course-card__title">French for Beginners</h3>
+          <span class="course-card__level">Beginner</span>
+        </header>
+        <div class="course-card__content">
+          <p class="course-card__description">
+            Start your French journey with essential vocabulary, pronunciation, and basic grammar in a supportive environment.
+          </p>
+          <div class="course-card__meta">
+            <div class="course-card__meta-item">
+              <span>📍</span>
+              <span>10 weeks</span>
+            </div>
+            <div class="course-card__meta-item">
+              <span>🕰️</span>
+              <span>2.5 hours/week</span>
+            </div>
+            <div class="course-card__meta-item">
+              <span>🔄</span>
+              <span>Hybrid</span>
+            </div>
+          </div>
+        </div>
+        <footer class="course-card__footer">
+          <div class="course-card__price">$249</div>
+          <button class="btn btn-secondary">Learn More</button>
+        </footer>
+      </article>
+      
+      <!-- Add more courses here... -->
+      
+    </section>
+    
+    <!-- Empty State -->
+    <div class="courses-empty-state" aria-hidden="true">
+      <h3>No courses found</h3>
+      <p>Try adjusting your filters or search terms to find more courses.</p>
+      <button class="btn btn-primary clear-filters-btn" style="margin-top: var(--space-4);">Clear Filters</button>
+    </div>
+    
+  </main>
+  
+  <!-- Screen Reader Only Styles -->
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: var(--color-primary-600);
+      color: white;
+      padding: var(--space-2) var(--space-4);
+      text-decoration: none;
+      border-radius: var(--radius-base);
+      z-index: 1000;
+      font-weight: var(--font-medium);
+    }
+    
+    .skip-link:focus {
+      top: 6px;
+    }
+  </style>
+  
+  <!-- Course Filter JavaScript -->
+  <script src="../src/js/components/courseFilter.js"></script>
+  
+  <script>
+    // Initialize course filter with custom options
+    document.addEventListener('DOMContentLoaded', () => {
+      // Custom initialization for demo purposes
+      const courseFilter = new CourseFilter({
+        animationDuration: 250
+      });
+      
+      // Listen for filter events (optional)
+      document.addEventListener('coursesFiltered', (e) => {
+        console.log('Courses filtered:', e.detail);
+      });
+    });
+  </script>
+</body>
+</html>
