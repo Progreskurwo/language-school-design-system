@@ -1,0 +1,96 @@
+{
+  "name": "language-school-design-system",
+  "version": "1.0.0",
+  "description": "Professional, accessible, and modern UI framework specifically designed for language schools and educational platforms",
+  "main": "dist/language-school.min.js",
+  "style": "dist/language-school.min.css",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Progreskurwo/language-school-design-system.git"
+  },
+  "keywords": [
+    "design-system",
+    "css-framework",
+    "education",
+    "language-school",
+    "accessibility",
+    "responsive",
+    "ui-components",
+    "wcag",
+    "mobile-first"
+  ],
+  "author": "Progreswwa <Krystian.koziel1998@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Progreskurwo/language-school-design-system/issues"
+  },
+  "homepage": "https://github.com/Progreskurwo/language-school-design-system#readme",
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:css dev:js dev:serve",
+    "dev:css": "postcss src/css/**/*.css --watch --dir dist --map",
+    "dev:js": "rollup -c rollup.config.js --watch",
+    "dev:serve": "live-server --port=3000 --open=examples/",
+    "build": "npm-run-all clean build:css build:js",
+    "build:css": "postcss src/css/main.css -o dist/language-school.css && postcss dist/language-school.css -o dist/language-school.min.css --no-map",
+    "build:js": "rollup -c rollup.config.js --environment NODE_ENV:production",
+    "clean": "rimraf dist",
+    "lint": "npm-run-all lint:css lint:js",
+    "lint:css": "stylelint src/css/**/*.css",
+    "lint:js": "eslint src/js/**/*.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "docs": "npm-run-all docs:css docs:js",
+    "docs:css": "sassdoc src/css --dest docs/css",
+    "docs:js": "jsdoc src/js -d docs/js",
+    "format": "prettier --write \"src/**/*.{css,js,md}\"",
+    "validate": "npm-run-all lint test",
+    "prepublishOnly": "npm run validate && npm run build",
+    "semantic-release": "semantic-release"
+  },
+  "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "autoprefixer": "^10.4.14",
+    "cssnano": "^6.0.1",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "jsdoc": "^4.0.2",
+    "live-server": "^1.2.2",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^10.1.0",
+    "postcss-custom-properties": "^13.2.0",
+    "postcss-import": "^15.1.0",
+    "prettier": "^2.8.8",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.25.1",
+    "sassdoc": "^2.7.4",
+    "stylelint": "^15.9.0",
+    "stylelint-config-standard": "^33.0.0"
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "examples/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Progreskurwo"
+  }
+}
